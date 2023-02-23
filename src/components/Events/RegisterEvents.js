@@ -42,8 +42,8 @@ const columns = [
 const RegisterEvents = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const event_data = useSelector((state) => state).EventReducer;
-    const events = event_data.data;
+    const {data,isError,isLoading,msg} = useSelector((state) => state.EventReducer);
+    const events = data;
     const getUserInfo = JSON.parse(localStorage.getItem('user-info'))
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -131,16 +131,16 @@ const RegisterEvents = () => {
                                 ))}
                                 </TableRow>
                             </TableHead>
-                            {event_data.isLoading === true ? 
+                            {isLoading === true ? 
                                 <TableBody>
                                     <TableRow>
                                         <TableCell colSpan={2}><Spinner /></TableCell>    
                                     </TableRow>
                                 </TableBody> :
-                                event_data.isError === true ? 
+                                isError === true ? 
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell colSpan={2}>{event_data.msg}</TableCell>     
+                                        <TableCell colSpan={2}>{msg}</TableCell>     
                                     </TableRow>
                                 </TableBody> :
                             <TableBody>
@@ -155,7 +155,7 @@ const RegisterEvents = () => {
                                             <TableCell key={column.id} align={column.align}>
                                             {column.format && typeof value === 'number'
                                                 ? column.format(value)
-                                                : (column.id==='action') ? (getUserInfo.role_id === 2 ? <><Button variant='info' onClick={()=>updateTicket(row)}>Update Ticket</Button>{' '}<Button variant='primary'>Make Payment</Button>{' '}<Button variant='danger' onClick={()=>{deleteRegisteredEvent(row.id)}}>Delete</Button></> : <Button variant='danger' onClick={()=>{deleteRegisteredEvent(row.id)}}>Delete</Button>) : value}
+                                                : (column.id==='action') ? (getUserInfo.role_id === 2 ? <><Button variant='info' onClick={()=>updateTicket(row)}>Update Ticket</Button>{' '}<Button variant='danger' onClick={()=>{deleteRegisteredEvent(row.id)}}>Delete</Button></> : <Button variant='danger' onClick={()=>{deleteRegisteredEvent(row.id)}}>Delete</Button>) : value}
                                             </TableCell>
                                         );
                                         })}

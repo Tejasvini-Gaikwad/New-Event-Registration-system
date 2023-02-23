@@ -24,7 +24,7 @@ const steps = ['Basic Info', 'Date Info', 'Tickit Info'];
 const CreateEvent = () => {
     const { state } = useLocation();
     const navigate = useNavigate("");
-    const data_res = useSelector((state) => state);
+    const {data,errors} = useSelector((state) => state.EventReducer);
     const dispatch = useDispatch();
     const [value, setValue] = useState('10:00');
     const [value2, setValue2] = useState('10:00');
@@ -55,8 +55,8 @@ const CreateEvent = () => {
         }
     }
     if(previousValues){
-        if(data_res.EventReducer.errors.length > 0 && checkButton === 'Update'){
-            const errorString = data_res.EventReducer.errors.reduce((acc,item)=>{
+        if(errors.length > 0 && checkButton === 'Update'){
+            const errorString = errors.reduce((acc,item)=>{
                 return acc+","+item
             })
             swal({
@@ -68,7 +68,7 @@ const CreateEvent = () => {
                     // navigate('/')
                 }
             })
-        }else if(checkButton === 'Update' && data_res.EventReducer.data.message && data_res.EventReducer.data.message === 'Event updated sucessfully'){
+        }else if(checkButton === 'Update' && data.data.message && data.data.message === 'Event updated sucessfully'){
             swal({
                 title: 'Success',
                 text: 'Event updated sucessfully',
